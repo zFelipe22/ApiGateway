@@ -28,7 +28,8 @@
 
 1) Primeiramente, deve-se verificar se a maquina local que está sendo utilizada, possui conexão com a internet, e, possua acesso ao destino https://cloud.mongodb.com/;
 2) Acessar a pasta do Back-End com o Prompt de comando aberto no respectivo diretório, e informar: npm install;
-3) Acessar a pasta do Back-End com o Prompt de comando aberto no respectivo diretório, e informar: npm start;
+3) Acessar a pasta do Back-End com o Prompt de comando aberto no respectivo diretório, e informar: npx prima generate;
+4) Acessar a pasta do Back-End com o Prompt de comando aberto no respectivo diretório, e informar: npm start;
 
 --> Front-End 
 
