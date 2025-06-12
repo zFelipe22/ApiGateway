@@ -1,0 +1,21 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "Back-End da atividade final - API Gateway",
+  "main": "api.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --watch api/api.js"
+  },
+  "keywords": [],
+  "author": "Felipe Negri da Silva",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.9.0"
+  }
+}

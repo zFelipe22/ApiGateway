@@ -1,0 +1,62 @@
+*{
+  font-family: 'Century Gothic';
+}
+
+body{
+  background: url(/src/images/wallpaper.jpg) no-repeat;
+}
+
+.Fields{
+  padding-top: 15px;
+}
+
+fieldset {
+  margin-top: 325px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 25px;
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: white;
+}
+
+form{
+  display: flex;
+  justify-content: center; 
+  align-items: center;  
+  height: 900px;   
+}
+
+.App{
+  position: absolute;
+  display: flex;
+  width: 120vh;
+  height: 600px;
+  border-radius: 25px;
+  background: transparent;
+  backdrop-filter: blur(30px);
+}
+
+legend {
+  padding: 0 10px;
+  margin-left: 10px;
+  background-color: white;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 4px solid #ccc;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

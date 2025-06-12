@@ -1,0 +1,55 @@
+version: '3.8'  # Versão docker-compose 
+
+networks:
+  kong-net:    # Rede interna para que os conteiners conversem entre sí!
+
+services:
+  kong-db:    # Bannco PostgreSQL para o Kong
+    image: postgres:13    # Imagem Postgres 13
+    container_name: kong-db    # Nome do container
+    restart: always    # Reinicia o container se der problema de execução
+    networks:
+      - kong-net    # Conecta o container à rede 'kong-net'
+    environment:    # Variáveis de ambiente para configurar o Postgres
+      POSTGRES_DB: kong        # Nome do banco criado no Postgres
+      POSTGRES_USER: kong      # Usuário do banco
+      POSTGRES_PASSWORD: kong  # Senha do banco
+    ports:
+      - "5432:5432"   # Mapeia a porta 5432 do container (padrão do Postgres)
+
+  kong-migrations:    # Config dos Schemas
+    image: kong:3.6.1    # Imagem Kong versão 3.6.1
+    container_name: kong-migrations    # Container para o processo de migração
+    depends_on:
+      - kong-db   # Dependencia do container 'kong-db' para iniciar a execução!
+    networks:
+      - kong-net   # Rede usada para comunicação interna
+    environment:    # Connection Settiongs
+      KONG_DATABASE: postgres         # Define o tipo de banco usado pelo Kong
+      KONG_PG_HOST: kong-db           # Host do banco aqui o nome do container do Postgres
+      KONG_PG_PASSWORD: kong          # Senha para acessar o banco
+    command: kong migrations bootstrap   # Comando para aplicar as migrações iniciais no banco de dados
+
+  kong:    # Serviço principal
+    image: kong:3.6.1    # Usa a mesma versão da imagem do Kong
+    container_name: kong    # Nome do container do Kong principal
+    depends_on:
+      - kong-db            # Só inicia depois do banco estar ativo
+      - kong-migrations    # Só inicia depois das migrações serem aplicadas
+    restart: always       # Reinicia automaticamente se parar
+    networks:
+      - kong-net          # Rede para comunicação
+    environment:          # Variáveis de ambiente para configuração do Kong
+      KONG_DATABASE: postgres               # Usa Postgres como banco de dados
+      KONG_PG_HOST: kong-db                 # Host do banco Postgres
+      KONG_PG_PASSWORD: kong                # Senha para o banco
+      KONG_PROXY_ACCESS_LOG: /dev/stdout   # Log de acessos do proxy vai para saída padrão (console)
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout   # Log de acessos da API Admin vai para saída padrão
+      KONG_PROXY_ERROR_LOG: /dev/stderr    # Log de erros do proxy vai para saída de erro padrão
+      KONG_ADMIN_ERROR_LOG: /dev/stderr    # Log de erros da API Admin vai para saída de erro padrão
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001      # Admin API escuta em todas as interfaces na porta 8001
+    ports:
+      - "8000:8000"   # Mapeia porta 8000 HTTP 
+      - "8443:8443"   # Mapeia porta 8443 HTTPS
+      - "8001:8001"   # Porta para acessar a Admin API HTTP
+      - "8444:8444"   # Porta para acessar a Admin API HTTPS
